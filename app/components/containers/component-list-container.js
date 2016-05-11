@@ -1,19 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ComponentList from '../views/component-list';
 import * as testApi from '../../services/test-api';
 
+import store from '../../store';
+import { getItems, deleteItem } from '../../actions/items-actions';
+
 const ComponentListContainer = React.createClass({
 
-  getInitialState: function() {
-    return {
-      items: []
-    }
-  },
-
   componentDidMount: function() {
-    testApi.getItems().then(items => {
-      this.setState({items: items})
-    });
+    testApi.getItems();
   },
 
   deleteItem: function(itemId) {
@@ -26,10 +22,16 @@ const ComponentListContainer = React.createClass({
 
   render: function() {
     return (
-      <ComponentList items={this.state.items} deleteItem={this.deleteItem} />
+      <ComponentList items={this.props.items} deleteItem={this.deleteItem} />
     );
   }
 
 });
 
-export default ComponentListContainer;
+const mapStateToProps = function(store) {
+  return {
+    items: store.itemsState.items
+  };
+};
+
+export default connect(mapStateToProps)(ComponentListContainer);

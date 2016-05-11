@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 
 // Reducers
-import componentReducer from './component-reducer';
+import itemsReducer from './items-reducer';
+import searchReducer from './search-reducer';
 
 // Combine Reducers
 var reducers = combineReducers({
-  componentReducer: componentReducer
+  itemsState: itemsReducer,
+  searchState: searchReducer
 });
 
 export default reducers;

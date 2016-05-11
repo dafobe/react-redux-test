@@ -1,38 +1,35 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import SearchListLayout from '../layouts/search-list-layout';
 import ComponentListContainer from '../views/component-list';
 import * as testApi from '../../services/test-api';
 
+import store from '../../store';
+import { loadSearchLayout } from '../../actions/search-actions';
+
 const SearchListContainer = React.createClass({
 
-  getInitialState: function() {
-    return {
-      items: [],
-      filteredItems: [],
-      title: 'by Name'
-    }
-  },
-
   componentDidMount: function() {
-    testApi.getItems().then(items => {
-      this.setState({items: items, filteredItems: items})
-    });
+    testApi.filterItems('');
   },
 
   filter: function(value) {
-    let newItemsState = this.state.items.filter(item => {
-                      let pattern = new RegExp(value.toLowerCase());
-                      return pattern.test(item.name.toLowerCase());
-                    })
-    this.setState({filteredItems:newItemsState});
+    testApi.filterItems(value);
   },
 
   render: function() {
     return (
-      <SearchListLayout items={this.state.filteredItems} title={this.state.title} filter={this.filter} />
+      <SearchListLayout items={this.props.items} title={this.props.searchType} filter={this.filter} />
     );
   }
 
 });
 
-export default SearchListContainer;
+const mapStateToProps = function(store) {
+  return {
+    items: store.searchState.items,
+    searchType: store.searchState.searchType
+  };
+};
+
+export default connect(mapStateToProps)(SearchListContainer);

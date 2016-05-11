@@ -1,9 +1,10 @@
 
 import * as types from '../actions/action-types';
 
-export function search(pattern) {
+export function search(pattern, items) {
   return {
     type: types.FILTER_ITEM,
-    pattern
+    pattern,
+    items
   };
 }
