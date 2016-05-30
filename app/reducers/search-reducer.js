@@ -1,24 +1,23 @@
+import {List, Map} from 'immutable';
 import * as types from '../actions/action-types';
 
-const initialState = {
-                      items: [],
-                      pattern: '',
-                      searchType: 'by Name'
-                      };
+const initialState = Map();
 
-const searchReducer = function(state = initialState, action) {
-  switch(action.type) {
-    case types.FILTER_ITEM:
-      return Object.assign({}, state, {
-                                        items: action.pattern?action.items.filter(item => {
-                                                                      let pattern = new RegExp(action.pattern?action.pattern.toLowerCase():action.pattern);
-                                                                      return pattern.test(item.name.toLowerCase());
-                                                                    }):action.items,
-                                        pattern: action.pattern,
-                                        searchType: action.searchType || state.searchState
-      });
-  }
-  return state;
+function filterItems(state, pattern, searchType){
+  const items = items || List();
+  
+  pattern = new RegExp(pattern?pattern.toLowerCase():pattern);
+
+  let filteredItems = action.pattern?items.filter(item => {
+                        return pattern.test(item.name.toLowerCase());
+                      }):action.items
+  return state.setIn(['filteredItems'], filteredItems);
 }
 
-export default searchReducer;
+export default function(state = initialState, action) {
+  switch(action.type) {
+    case types.FILTER_ITEM:
+      return filterItems(state.setIn('items')action.items, action.pattern);
+  }
+  return state;
+};

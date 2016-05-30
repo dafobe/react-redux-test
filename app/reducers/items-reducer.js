@@ -1,18 +1,17 @@
+import {List, Map, fromJS} from 'immutable';
 import * as types from '../actions/action-types';
 
-const initialState = {items: []};
+const initialState = Map();
 
-const itemsReducer = function(state = initialState, action) {
+export default function(state = initialState, action) {
+  console.log('items-reducer');
+  let newState = state;
 
   switch(action.type) {
 
     case types.GET_ITEMS_SUCCESS:
-      return Object.assign({}, state, {
-        items: action.items
-      });
+      newState= state.set('items',List(action.items));
   }
-  
-  return state;
-}
-
-export default itemsReducer;
+  console.log('items-reducer return', newState);
+  return newState;
+};

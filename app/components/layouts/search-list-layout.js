@@ -17,7 +17,6 @@ const SearchListLayout = React.createClass({
           <ComponentList items={this.props.items} />
         </div>
         <footer className="search-footer">
-          [Total Results: {this.props.items.length}]
         </footer>
       </div>
     );

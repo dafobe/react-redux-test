@@ -10,7 +10,8 @@ import { loadSearchLayout } from '../../actions/search-actions';
 const SearchListContainer = React.createClass({
 
   componentDidMount: function() {
-    testApi.filterItems('');
+    testApi.getItems();
+    testApi
   },
 
   filter: function(value) {
@@ -26,9 +27,14 @@ const SearchListContainer = React.createClass({
 });
 
 const mapStateToProps = function(store) {
+  function getItems(){
+    let items = store.itemsState.getIn(['filteredItems']);
+    return items?items.toJS():[]
+  }
+  
   return {
-    items: store.searchState.items,
-    searchType: store.searchState.searchType
+    items: getItems(),
+    searchType: store.searchState.getIn(['searchType'],'')
   };
 };
 

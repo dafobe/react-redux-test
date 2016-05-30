@@ -8,10 +8,6 @@ import { getItems, deleteItem } from '../../actions/items-actions';
 
 const ComponentListContainer = React.createClass({
 
-  componentDidMount: function() {
-    testApi.getItems();
-  },
-
   deleteItem: function(itemId) {
     console.log('Delete Item: Call service and then update the state')
 //    widgetApi.deleteWidget(widgetId).then(() => {
@@ -19,8 +15,11 @@ const ComponentListContainer = React.createClass({
 //      this.setState({widgets: newWidgets})
 //    });
   },
-
+  componentDidMount: function() {
+    testApi.getItems();
+  },
   render: function() {
+    console.log('component-list-container', this.props);
     return (
       <ComponentList items={this.props.items} deleteItem={this.deleteItem} />
     );
@@ -29,8 +28,13 @@ const ComponentListContainer = React.createClass({
 });
 
 const mapStateToProps = function(store) {
+  function getItems(){
+    let items = store.itemsState.getIn(['items']);
+    return items?items.toJS():[]
+  }
+  
   return {
-    items: store.itemsState.items
+    items: getItems()
   };
 };
 

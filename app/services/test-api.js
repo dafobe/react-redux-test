@@ -31,10 +31,10 @@ export function deleteItem(itemId) {
  * Filter widgets
  */
 
-export function filterItems(pattern) {
-  return axios.get('http://localhost:3011/items')
-    .then(response => {
-      store.dispatch(search(pattern, response.data));
-      return response;
-    });
+export function filterItems(items, pattern) {
+  store.dispatch(search(pattern, items));
+//  return axios.get('http://localhost:3011/items')
+//    .then(response => {
+//      return response;
+//    });
 }
