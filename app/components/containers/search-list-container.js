@@ -11,16 +11,17 @@ const SearchListContainer = React.createClass({
 
   componentDidMount: function() {
     testApi.getItems();
-    testApi
+    this.filter();
   },
 
-  filter: function(value) {
-    testApi.filterItems(value);
+  filter: function(pattern) {
+    const items = this.props.items || [];
+    testApi.filterItems(items, pattern);
   },
 
   render: function() {
     return (
-      <SearchListLayout items={this.props.items} title={this.props.searchType} filter={this.filter} />
+      <SearchListLayout items={this.props.filteredItems} title={this.props.searchType} filter={this.filter} />
     );
   }
 
@@ -28,12 +29,16 @@ const SearchListContainer = React.createClass({
 
 const mapStateToProps = function(store) {
   function getItems(){
-    let items = store.itemsState.getIn(['filteredItems']);
+    const items = store.itemsState.getIn(['items']);
     return items?items.toJS():[]
   }
-  
+  function getFilteredItems(){
+    let filteredItems = store.searchState.getIn(['filteredItems']);
+    return filteredItems || [];
+  }
   return {
     items: getItems(),
+    filteredItems: getFilteredItems(),
     searchType: store.searchState.getIn(['searchType'],'')
   };
 };

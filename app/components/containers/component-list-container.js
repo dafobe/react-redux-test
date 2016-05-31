@@ -19,7 +19,6 @@ const ComponentListContainer = React.createClass({
     testApi.getItems();
   },
   render: function() {
-    console.log('component-list-container', this.props);
     return (
       <ComponentList items={this.props.items} deleteItem={this.deleteItem} />
     );
